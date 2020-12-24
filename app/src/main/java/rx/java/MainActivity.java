@@ -13,6 +13,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -77,7 +79,19 @@ public class MainActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleResults, this::handleError);
-
-
     }
+
+    private void handleResults(List<Crypto.Market> marketList){
+        if (marketList != null && marketList.size() != 0){
+            recyclerViewAdapter.setData(marketList);
+        }else {
+            Toast.makeText(this,"NO RESULTS FOUND",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void handleError(Throwable t){
+        Toast.makeText(this, "ERROR IN FETCHING API RESPONSE.Try again"
+              ,Toast.LENGTH_LONG).show();
+    }
+
 }
