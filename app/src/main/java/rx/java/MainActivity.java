@@ -3,6 +3,10 @@ package rx.java;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -11,6 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import android.os.Bundle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
+
 import static rx.java.CryptocurrencyService.BASE_URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +52,32 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         callEndpoints();
+    }
+
+    private void callEndpoints() {
+
+        CryptocurrencyService cryptocurrencyService = retrofit.create(CryptocurrencyService.class);
+        Observable<List<Crypto.Market>> btcObservable = cryptocurrencyService
+                .getCoinData("btc")
+                .map(result -> Observable.fromIterable(result.ticker.markets))
+                .flatMap(x -> x).filter(y -> {
+                    y.coinName = "btc";
+                    return true;
+                }).toList().toObservable();
+
+        Observable<List<Crypto.Market>> ethObservable = cryptocurrencyService
+                .getCoinData("eth")
+                .map(result -> Observable.fromIterable(result.ticker.markets))
+                .flatMap(x -> x).filter(y ->{
+                    y.coinName = "eth";
+                    return true;
+                }).toList().toObservable();
+
+        Observable.merge(btcObservable, ethObservable)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleResults, this::handleError);
+
 
     }
 }
