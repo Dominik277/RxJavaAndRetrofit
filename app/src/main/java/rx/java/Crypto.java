@@ -1,8 +1,6 @@
 package rx.java;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Crypto {

@@ -12,6 +12,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         callEndpoints();
     }
 
+    @SuppressLint("CheckResult")
     private void callEndpoints() {
 
         CryptocurrencyService cryptocurrencyService = retrofit.create(CryptocurrencyService.class);

@@ -60,11 +60,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     //podacima to joj opskrbimo kao parametar position
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        //ovdje smo napravili instancu od inner klase Market koja se nalazi unutar Crypto klase te smo u nju pohranili
+        //ono sto se odvilo s desne strane.Na desnoj strani imamo marketList koji je ArrayList objekata tipa Market i
+        //s pomocu metode get() te njenog parametra position se tocno zna koji objekt treba predati jer unutar ArrayList-a
+        //postoji vise objekata i svaki u sebi sadrzi razlicite informacije, a razlikujemo ih prema broju indexa
         Crypto.Market market = marketList.get(position);
 
+        //da bi lakse shvatili sljedeci dio koda moramo poceti od Market klase, od Market klase se moze napraviti beskonacno
+        //mnogo instanci i svaka u sebi sadrzi tri string varijable koje su sve razlicite, a mi smo te tri varijable nazvali
+        //txtCoin, txtMarket, txtPrice te s pomocu metode setText() mi postavljamo sta ce biti napisano unutar tih TextView-ova
+        //ono sto zelimo da bude napisano to prilozimo kao argument
         holder.txtCoin.setText(market.coinName);
         holder.txtMarket.setText(market.market);
         holder.txtPrice.setText("$" + String.format("%.2f",Double.parseDouble(market.price)));
+
+        //ovdje provjeravamo određeni string, u nasem slucaju provjeravamo sta je pohranjeno u string varijablu coinName koja
+        //se nalazi u svakom objektu, dva stringa su jednaka ako im je duljina jednaka i ako su karakteri jednaki, velika i
+        //mala slova se zanemaruju.U nasem slucaju ako tekst koji je pohranjen unutar varijable coinName je jednak argumentu
+        //kojeg smo predali metodi equalsIgnoreCase() onda se izvrsa dio koda unutar if() bloka te se cardView boja u sivo, a
+        //ako dio u if zagradi nije istinit onda se izvrsava dio bloka else te se cardView boja u zeleno
+        //equalsIgnoreCase() --> ova metoda nam sluzi da usporedi dva stringa jesu li jednaka te vraca true ako jesu jednaki
+        //                       a ako su razliciti vraca false, dva stringa su jednaka ako su jednake duljine i ako imaju
+        //                       iste karaktere, velika i mala slova se zanemaruju
         if (market.coinName.equalsIgnoreCase("eth")){
             holder.cardView.setCardBackgroundColor(Color.GRAY);
         }else {
@@ -79,21 +97,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return 0;
     }
 
+    //ova metoda sluzi kako bi postavila sve podatke unutar marketList objekta
     public void setData(List<Crypto.Market> data){
         this.marketList.addAll(data);
+
+        //ova metoda daje doznanja da se nesto promjenilo, a ta promjena koja se dogodila u ovom slucaju je da
+        //su se unijeli podaci unutar marketList objekta
         notifyDataSetChanged();
     }
 
+    //ova klasa nam sluzi kao nekakav kontejner unutar kojeg drzimo sve one elemente koji se nalaze u jednom retku
+    //naseg RecyclerView-a.Ako pogledamo unutar XML layout recyclerview_item_layout datoteku vidjet cemo da se unutar
+    //nje nalaze 4 elementa kao sto smo i naveli ovdje unutar ove klase
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        //u sljedecem bloku koda smo definirali preko kojih imena cemo dozivati objekte u memoriji onih tipova podataka
+        //kojih smo definirali u layout-u.Znaci definirali smo da ce nas redak se sastojati od tri tekstualna dijela
+        //te smo tako stvorili tri objekta TextView tipa i svakome dali specificno ime kako bi ih lakse razlikovali
+        //te smo organizirali da ta tri TextView-a budu unutar CardView-a
         public TextView txtCoin;
         public TextView txtMarket;
         public TextView txtPrice;
         public CardView cardView;
 
+        //ovo nam je custom konstruktor u cijem tijelu smo atributima iz XML-a dodjelili java objekte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            //u sljedecem dijelu koda smo definirali da onim varijablama koje smo definirali na pocetku ove klase da
+            //dodljeljujemo atribute iz XML-a pomocu findViewById() metode.Ta metoda odlazi u XML i trazi one atribute
+            //po ID-ovima s obzirom na ono sto smo joj predali kao argument, te kada nade ono sto smo joj predali onda
+            //to pohranjuje u objekt
             txtCoin = itemView.findViewById(R.id.txtCoin);
             txtMarket = itemView.findViewById(R.id.txtMarket);
             txtPrice = itemView.findViewById(R.id.txtPrice);
