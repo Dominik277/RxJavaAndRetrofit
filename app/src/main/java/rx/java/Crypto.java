@@ -3,6 +3,13 @@ package rx.java;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
+//ovo je klasa koja unutar sebe ima jos dvije klase Market i Ticker
+//sve tri klase su nam POJO klase koje sadrze najbitnije podatke vezane za aplikaciju
+//ove klase imaju member varijable koje ce opisivati objekte koji se instanciraju od te klase
+//@SerializedName --> ova enotacija nam govori da cemo ove member varijable također imati prikazane
+//                    i u JSON zapisu te smo s ovom anotacijom odredili kako ce biti prikazani podaci
+//                    unutar ovog JSon formata, znaci onako kako zelimo da izgleda member varijabla
+//                    unutar JSON-a to navedemo kao string argument ovoj anotaciji
 public class Crypto {
 
     @SerializedName("ticker")
