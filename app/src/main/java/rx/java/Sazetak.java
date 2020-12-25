@@ -19,6 +19,11 @@ MainActivity
 ----------------------
 CryptocurrencyService
 ----------------------
+Ovo je interfejs unutar kojega smo definirali metodu getCoinData koja ima anotaciju @GET koja je zasluzna za to da da kao klijent posalje
+zahtjev serveru kako bi nam server poceo slati podatke koje zelimo.@PATH anotacija nam sluzi kako bi definirali protokol s kojeg cemo
+skidati podatke.Te smo također napravili string varijablu BASE_URL unutar koje smo pohranili link s kojeg cemo dokucivati podatke, i svaki
+sljedeci put kada budemo htjeli taj link negdje upotrijebiti referencirat cemo ga s pomocu varijable BASE_URL, a ne da upisujemo svaki put
+taj dugacki link.
 
 ---------------------
 RecyclerViewAdapter
